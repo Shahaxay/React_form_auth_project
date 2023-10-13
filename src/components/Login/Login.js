@@ -47,21 +47,25 @@ const Login = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
 
-// //side effect handler
-// useEffect(()=>{
-//   //debouncing
-//   const timer=setTimeout(()=>{
-//     console.log("side effect");
-//     setFormIsValid(
-//       enteredPassword.trim().length > 6 && enteredEmail.includes('@') && enteredCollege.trim().length>0
-//     );
-//   },500)
-//   //cleanup function
-//   return ()=>{
-//     console.log("cleanup");
-//     clearTimeout(timer);
-//   };
-// },[enteredPassword,enteredEmail,enteredCollege])
+  const {isValid:isEmailValid}=emailState;
+  const {isValid:isPasswordValid}=passwordState;
+  const {isValid:isCollegeValid}=collegeState;
+
+//side effect handler
+useEffect(()=>{
+  //debouncing
+  const timer=setTimeout(()=>{
+    console.log("side effect");
+    setFormIsValid(
+      isEmailValid && isPasswordValid && isCollegeValid
+    );
+  },500)
+  //cleanup function
+  return ()=>{
+    console.log("cleanup");
+    clearTimeout(timer);
+  };
+},[isEmailValid,isPasswordValid,isCollegeValid])
 
   const emailChangeHandler = (event) => {
     dispatchEmail({type:'EMAIL_CHANGED',val:event.target.value});
